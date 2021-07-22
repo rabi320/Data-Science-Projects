@@ -1,18 +1,33 @@
 import streamlit as st
 import pandas as pd
+
+#tabnet
 from pytorch_tabnet.tab_model import TabNetClassifier
 import numpy as np
+
 #pipeline tools
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
+
+#ml related
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
+
+#image
+from PIL import Image
+image = Image.open('Data/House.png')
+st.image(image)
+
+
+#variables
 Continuous = ["MORTDUE", "VALUE", "CLAGE", "DEBTINC"]
 Discrete = ["YOJ", "DEROG", "DELINQ", "NINQ", "CLNO"]
 Cats = ['REASON','JOB']
+
+#title
 st.write("""
 # Home Equity Loan Prediction App
 This app predicts if the applicant will **return the loan or not**!!
@@ -27,7 +42,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Sidebar
 # Header of Specify Input Parameters
-st.sidebar.header('Specify Input Parameters')
+st.sidebar.header('Specify The Clients Parameters')
 def user_input_features():
     LOAN = st.sidebar.slider('Loan Amount', 1100, 89800)
     MORTDUE = st.sidebar.slider('Amount due on existing mortgage', 73807, 399550)
@@ -103,16 +118,17 @@ clf.fit(X_train, y_train)
 #preprocess df 
 Data = preprocess.transform(df)
 
-# Apply Model to Make Prediction
-Predprob = pd.DataFrame(clf.predict_proba(Data),columns = ["Returns Loan", "Default"])
+
 
 #predict probabilities
-st.header('probabilities of Home Eq')
+Predprob = pd.DataFrame(clf.predict_proba(Data),columns = ["Returns Loan", "Default"])
+st.header('Probabilities of Home Eq')
 st.write(Predprob)
 st.write('---')
 
-prediction = str(np.where(clf.predict_proba(Data)[:,1]<0.5,"Returns Loan","Default"))[2:-2]
+
 #prediction
+prediction = str(np.where(clf.predict_proba(Data)[:,1]<0.5,"Returns Loan","Default"))[2:-2]
 st.header('Prediction of Home Eq')
 st.write(prediction)
 st.write('---')
