@@ -134,5 +134,6 @@ def main():
         result = prediction(features)
         st.success(f'The Diamond is worth {result}$')
      
-if __name__=='__main__':
-    main()
+
+    if __name__=='__main__':
+        main()
