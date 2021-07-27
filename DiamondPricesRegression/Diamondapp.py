@@ -17,7 +17,7 @@ from sklearn.preprocessing import StandardScaler
 from PIL import Image
 
 #data
-diamond = pd.read_csv("Data/diamonds.csv")
+diamond = pd.read_csv("diamonds.csv")
 diamond.drop("Unnamed: 0",axis = 1, inplace = True)
 
 X = diamond.drop("price", axis = 1)
@@ -40,7 +40,7 @@ def Outlier_Detector(X,factor):
     return X
 
 #creating outlier_remover object using FunctionTransformer with factor=3
-Outlier = FunctionTransformer(Outlier_Detector,kw_args={'factor':1.5})
+Outlier = FunctionTransformer(Outlier_Detector,kw_args={'factor':3})
 
 #contiuous_transformer = SimpleImputer(strategy='median')
 
